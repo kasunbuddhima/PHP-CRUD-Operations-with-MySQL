@@ -7,11 +7,19 @@ include("include_connection.php");
 
 static $search_result = "";
 if(isset($_POST['search_submit'])){
+    if($_POST['txt_search_task'] != ""){
+        $search_result = searchTasks($_POST['txt_search_task']);
+        
+    }else{
+        echo "noooo";
+         header('Location: tasks.php?err=enter search key');
+    }
     
-    $search_result = searchTasks($_POST['txt_search_task']);
+    /*
     if(empty($search_result)){
         header('Location: tasks.php?err=no match found');
-    }  
+    } 
+    */
 }
 
 ?>
@@ -43,13 +51,9 @@ if(isset($_POST['search_submit'])){
                 $result;
                 if(!empty($search_result)){ //task search reslut loading
                     $result = $search_result;
-                    echo "Search results with: ".$_POST['txt_search_task'];
-                }else{  //normal tasks loading
-                    $result = selectAllTasks(); 
-                    
-                }
-                
-                $count = 1;
+                    if($result != "")
+                        echo mysqli_num_rows($result)." Search results with: ".$_POST['txt_search_task'];
+             $count = 1;
                 while($row = mysqli_fetch_array($result)){
                     ?>
             <tr>
@@ -62,6 +66,26 @@ if(isset($_POST['search_submit'])){
             <?php
                 $count++;
                 }
+                    
+                }else{  //normal tasks loading
+                    $result = selectAllTasks(); 
+             $count = 1;
+                    while($row = mysqli_fetch_array($result)){
+                    ?>
+            <tr>
+                <td><?php echo $count; ?></td>
+                <td><?php echo $row['task_name'] ?></td>
+                <td><?php echo $row['description'] ?></td>
+                <td><?php echo $row['username'] ?></td>
+                <td><a href="update_task.php?taskid=<?php echo $row['task_id'] ?>">update</a></td>
+            </tr>
+            <?php
+                        $count++;
+                    }
+                    
+                }
+                
+               
             
             ?>
             

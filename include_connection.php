@@ -1,6 +1,4 @@
 <?php
- 
- 
 
 function database(){
     static $conn;
@@ -115,6 +113,8 @@ function searchTasks($text){
     
     $result = mysqli_query($conn, $query);
     if(mysqli_num_rows($result) > 0){
+        return $result;
+    }else{
         return $result;
     }
     
