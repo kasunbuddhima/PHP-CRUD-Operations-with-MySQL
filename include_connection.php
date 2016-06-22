@@ -1,4 +1,9 @@
 <?php
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> 6a10ff0c53a34e9d10b76625e318e526eadfddc0
 
 function database(){
     static $conn;
